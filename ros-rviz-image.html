@@ -107,6 +107,7 @@
         this._imageTopic = new ROSLIB.Topic({
             ros : this.ros,
             name : this.topic + _transportHints[this.transport_hints].topicSuffix,
+            compression : 'cbor',
             messageType : _transportHints[this.transport_hints].type
         });
 
@@ -116,10 +117,34 @@
           if (updatingImage) {
             return;   // Drop frame if previous one didn't load yet.
           }
+
           updatingImage = true;
           let image = new Image();
-          image.src = "data:image/jpg;base64," + message.data;
+
+          let blobUrl = null;
+          if (message.data.buffer) {
+            // Binary path -- load Blob
+            blobUrl = URL.createObjectURL(new Blob([message.data], {type: 'image/jpg'}));
+            image.src = blobUrl;
+          } else {
+            // Text path -- load base64 string
+            image.src = "data:image/jpg;base64," + message.data;
+          }
+
+          function finishUpdate() {
+            updatingImage = false;
+            if (blobUrl) {
+              URL.revokeObjectURL(blobUrl);
+            }
+          }
+
+          image.onerror = function(e) {
+            finishUpdate();
+            console.error("Error loading Image", e);
+          };
+
           image.onload = function() {
+            finishUpdate();
             // Resize keeping ratio and center the image on the canvas.
             const hRatio = canvas.width / image.width;
             const vRatio = canvas.height / image.height;
@@ -130,7 +155,6 @@
             context.drawImage(image, 0, 0, image.width, image.height,
                               centerShift_x, centerShift_y,
                               image.width * ratio, image.height * ratio);
-            updatingImage = false;
           };
         });
       },
