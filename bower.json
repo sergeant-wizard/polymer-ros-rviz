@@ -36,7 +36,7 @@
     "paper-radio-group": "PolymerElements/paper-radio-group#^2.0.0",
     "paper-styles": "PolymerElements/paper-styles#^2.0.0",
     "paper-tooltip": "PolymerElements/paper-tooltip#^2.0.0",
-    "ros3djs": "RobotWebTools/ros3djs#0978eb4773d3aa4891e4c73449398fe124df9c34",
+    "ros3djs": "RobotWebTools/ros3djs#^1.0.0",
     "ros-service": "jstnhuang/ros-service#^2.0.0",
     "ros-websocket": "jstnhuang/ros-websocket#^3.0.2",
     "paper-dialog": "PolymerElements/paper-dialog#^2.0.0",
