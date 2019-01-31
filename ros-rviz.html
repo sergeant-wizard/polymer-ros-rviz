@@ -470,8 +470,7 @@ Example:
         this._configParam.get(function(value) {
           if (value != null) {
             try {
-              that.$.configText.value = value;
-              that._applyConfigText();
+              that._applyConfigText(value);
             } catch (ex) {
               console.log('Could not load configuration: ', value);
             }
@@ -488,10 +487,19 @@ Example:
         this.$.configDialog.open();
       },
 
-      _applyConfigText: function() {
-        var configText = this.$.configText.value;
-        var config = JSON.parse(configText);
+      _applyConfigText: function(inputText) {
+        const configText = inputText || this.$.configText.value;
+        let config = JSON.parse(configText);
+        const globalOptionsBackup = JSON.parse(JSON.stringify(this.config.globalOptions));
+        // Restore keys that are empty or not defined.
+        Object.keys(globalOptionsBackup).forEach(function(key, index) {
+          if (!config.globalOptions[key]) {
+            config.globalOptions[key] = globalOptionsBackup[key];
+          }
+        });
+
         this.config = config;
+        this.$.configText.value = JSON.stringify(this.config);
       },
     });
   </script>
