@@ -488,7 +488,9 @@ Example:
       },
 
       _applyConfigText: function(inputText) {
-        const configText = inputText || this.$.configText.value;
+        let configText = inputText;
+        if (typeof inputText !== 'string')
+           configText = this.$.configText.value;
         let config = JSON.parse(configText);
         const globalOptionsBackup = JSON.parse(JSON.stringify(this.config.globalOptions));
         // Restore keys that are empty or not defined.
