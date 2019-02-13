@@ -41,7 +41,7 @@
       destroy: function() {
         if (this._pc2) {
           this._pc2.unsubscribe();
-          this.viewer.scene.remove(this._pc2.particles.sn);
+          this.viewer.scene.remove(this._pc2.points.sn);
           delete this._pc2;
         }
       },
@@ -49,7 +49,7 @@
       hide: function() {
         if (this._pc2) {
           this._pc2.unsubscribe();
-          this.viewer.scene.remove(this._pc2.particles.sn);
+          this.viewer.scene.remove(this._pc2.points.sn);
           delete this._pc2;
         }
       },
