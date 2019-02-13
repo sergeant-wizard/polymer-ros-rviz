@@ -35,7 +35,7 @@
       },
 
       observers: [
-        '_optionsChanged(param, tfPrefix, tfClient, ros, globalOptions.colladaLoader, globalOptions.colladaServer)',
+        '_optionsChanged(param, tfPrefix, tfClient, ros, globalOptions.colladaServer)',
       ],
 
       destroy: function() {
@@ -54,7 +54,7 @@
         }
       },
 
-      _optionsChanged: function(param, tfClient, ros, colladaLoader, colladaServer) {
+      _optionsChanged: function(param, tfClient, ros, colladaServer) {
         var that = this;
         this.debounce('updateForOptions', function() {
           that.hide();
@@ -66,7 +66,6 @@
 
       _updateDisplay: function(callback) {
         if (!(this.ros && this.tfClient && this.param
-              && this.globalOptions.colladaLoader
               && this.globalOptions.colladaServer)) {
           return;
         }
@@ -79,15 +78,7 @@
           var urdfModel = new ROSLIB.UrdfModel({
             string: string
           });
-          var loader = ROS3D.COLLADA_LOADER_2;
-          if (that.globalOptions.colladaLoader === 'collada') {
-            loader = ROS3D.COLLADA_LOADER;
-          } else if (that.globalOptions.colladaLoader === 'collada2') {
-            loader = ROS3D.COLLADA_LOADER_2;
-          } else {
-            console.warn('Unknown Collada loader', that.globalOptions.colladaLoader);
-            loader = ROS3D.COLLADA_LOADER_2;
-          }
+          var loader = ROS3D.COLLADA_LOADER;
           that.hide();
           that._urdf = new ROS3D.Urdf({
             urdfModel: urdfModel,

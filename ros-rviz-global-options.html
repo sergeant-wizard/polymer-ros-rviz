@@ -18,10 +18,6 @@
     <paper-input id="webVideoUrl" label="Web video server URL" value="[[globalOptions.videoServer]]" on-blur="_updateGlobalOptions"></paper-input>
     <paper-input id="colladaUrl" label="Collada file server URL" value="[[globalOptions.colladaServer]]" on-blur="_updateGlobalOptions"></paper-input>
     <label id="colladaLabel">Collada loader:</label>
-    <paper-radio-group selected="{{globalOptions.colladaLoader}}" aria-labelledby="colladaLabel">
-      <paper-radio-button name="collada">Loader 1</paper-radio-button>
-      <paper-radio-button name="collada2">Loader 2</paper-radio-button>
-    </paper-radio-group>
   </template>
   <script>
     Polymer({
@@ -41,9 +37,6 @@
       ready: function() {
         if (!this.globalOptions.background) {
           this.set('globalOptions.background', '#111111');
-        }
-        if (!this.globalOptions.colladaLoader) {
-          this.set('globalOptions.colladaLoader', 'collada2');
         }
         if (!this.globalOptions.colladaServer) {
           var protocol = window.location.protocol;
