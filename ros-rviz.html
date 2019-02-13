@@ -198,6 +198,14 @@ Example:
         },
 
         /**
+         * A flag to track whether we've already loaded the initial config file from a param.
+         */
+        initialized: {
+          type: Boolean,
+          value: false
+        },
+
+        /**
          * A ROS connection object taken from the `ros` property of the `<ros-websocket>` element.
          */
         ros: {
@@ -450,6 +458,10 @@ Example:
           rate: 10.0
         });
 
+        if (this.initialized)
+          return;
+        this.initialized = true;
+
         this._configParam = new ROSLIB.Param({
           ros: this.ros,
           name: '/rvizweb/global_config'
@@ -458,8 +470,7 @@ Example:
         this._configParam.get(function(value) {
           if (value != null) {
             try {
-              that.$.configText.value = value;
-              that._applyConfigText();
+              that._applyConfigText(value);
             } catch (ex) {
               console.log('Could not load configuration: ', value);
             }
@@ -476,10 +487,21 @@ Example:
         this.$.configDialog.open();
       },
 
-      _applyConfigText: function() {
-        var configText = this.$.configText.value;
-        var config = JSON.parse(configText);
+      _applyConfigText: function(inputText) {
+        let configText = inputText;
+        if (typeof inputText !== 'string')
+           configText = this.$.configText.value;
+        let config = JSON.parse(configText);
+        const globalOptionsBackup = JSON.parse(JSON.stringify(this.config.globalOptions));
+        // Restore keys that are empty or not defined.
+        Object.keys(globalOptionsBackup).forEach(function(key, index) {
+          if (!config.globalOptions[key]) {
+            config.globalOptions[key] = globalOptionsBackup[key];
+          }
+        });
+
         this.config = config;
+        this.$.configText.value = JSON.stringify(this.config);
       },
     });
   </script>
