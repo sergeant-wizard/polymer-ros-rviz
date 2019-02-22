@@ -75,15 +75,7 @@
       },
 
       _msgCallback: function(that, message) {
-        var loader = ROS3D.COLLADA_LOADER_2;
-        if (that.globalOptions.colladaLoader === 'collada') {
-          loader = ROS3D.COLLADA_LOADER;
-        } else if (that.globalOptions.colladaLoader === 'collada2') {
-          loader = ROS3D.COLLADA_LOADER_2;
-        } else {
-          console.warn('Unknown Collada loader', that.globalOptions.colladaLoader);
-          loader = ROS3D.COLLADA_LOADER_2;
-        }
+        var loader = ROS3D.COLLADA_LOADER;
 
         var newMarker = new ROS3D.Marker({
           message: message,

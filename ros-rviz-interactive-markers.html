@@ -70,15 +70,7 @@
         if (this._client) {
           this._client.unsubscribe();
         }
-        var loader = ROS3D.COLLADA_LOADER_2;
-        if (that.globalOptions.colladaLoader === 'collada') {
-          loader = ROS3D.COLLADA_LOADER;
-        } else if (that.globalOptions.colladaLoader === 'collada2') {
-          loader = ROS3D.COLLADA_LOADER_2;
-        } else {
-          console.warn('Unknown Collada loader', that.globalOptions.colladaLoader);
-          loader = ROS3D.COLLADA_LOADER_2;
-        }
+        var loader = ROS3D.COLLADA_LOADER;
         this._client = new ROS3D.InteractiveMarkerClient({
           loader: loader,
           path: this.globalOptions.colladaServer,
